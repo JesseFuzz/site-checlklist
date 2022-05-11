@@ -7,30 +7,40 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Table(name="activity")
 public class Activity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="act_id")
 	private Long id;
 	
-	@Column
+	@Column(name="act_description")
 	private String description;
 	
-	@Column
-	private Boolean done;
+	@Column(name="act_done")
+	private Boolean done = false;
 	
-	@Column
-	private LocalDateTime createdDate;
+	@JsonFormat(pattern = "dd/MM/yyyy HH/mm") //H maiúsculo 15h e h minúsculo 3h
+	@Column(name="act_created_date")
+	private LocalDateTime createdDate; //= LocalDateTime.now();
 	
-	@Column
+	@Column(name="act_done_data")
 	private LocalDateTime doneDate;
+	
+	@PrePersist //annotation do JPA para que esse método seja executado antes de salvar uma activity no banco
+	public void beforeSave() {
+		setCreatedDate(LocalDateTime.now());
+	}
 
 	public Long getId() {
 		return id;
