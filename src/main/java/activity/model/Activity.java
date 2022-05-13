@@ -9,11 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name="activity")
@@ -25,6 +24,7 @@ public class Activity {
 	private Long id;
 	
 	@Column(name="act_description")
+	@NotBlank(message = "Description is mandatory")
 	private String description;
 	
 	@Column(name="act_done")
